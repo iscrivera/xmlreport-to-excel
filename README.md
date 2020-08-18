@@ -44,7 +44,7 @@ _Con esto se genera el jar ejecutable en la carpeta target_
 cd target
 ```
 
-_Copia el jar xmlreport-to-excel.jar en la carpeta donde lo vas a utilizar_
+_Copia el jar xmlreport-to-excel.jar y la carpeta dependency-jars hacia la ruta en donde lo vas a utilizar_
 
 ## Ejecutando las pruebas ⚙️
 
