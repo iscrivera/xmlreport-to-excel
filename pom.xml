@@ -10,13 +10,13 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<jodatime.version>2.5</jodatime.version>
 		<junit.version>4.11</junit.version>
 		<log4j.version>1.2.17</log4j.version>
 		<jaxb.version>2.1.9</jaxb.version>
 		<poi.version>4.1.1</poi.version>
-		<lombok.version>1.18.04</lombok.version>
+		<lombok.version>1.18.12</lombok.version>
 		<math3.version>3.6.1</math3.version>
 	</properties>
 
@@ -45,8 +45,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.12</version>
-			<scope>${lombok.version}</scope>
+			<version>${lombok.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
