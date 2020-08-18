@@ -71,7 +71,7 @@ public class FlawListType {
      */
     public List<FlawType> getFlaw() {
         if (flaw == null) {
-            flaw = new ArrayList<FlawType>();
+            flaw = new ArrayList<>();
         }
         return this.flaw;
     }

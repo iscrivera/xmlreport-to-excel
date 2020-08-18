@@ -80,7 +80,7 @@ public class SeverityType {
      */
     public List<CategoryType> getCategory() {
         if (category == null) {
-            category = new ArrayList<CategoryType>();
+            category = new ArrayList<>();
         }
         return this.category;
     }

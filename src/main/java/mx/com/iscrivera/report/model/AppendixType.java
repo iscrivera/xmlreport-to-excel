@@ -104,7 +104,7 @@ public class AppendixType {
      */
     public List<ScreenshotType> getScreenshot() {
         if (screenshot == null) {
-            screenshot = new ArrayList<ScreenshotType>();
+            screenshot = new ArrayList<>();
         }
         return this.screenshot;
     }
@@ -133,7 +133,7 @@ public class AppendixType {
      */
     public List<String> getCode() {
         if (code == null) {
-            code = new ArrayList<String>();
+            code = new ArrayList<>();
         }
         return this.code;
     }

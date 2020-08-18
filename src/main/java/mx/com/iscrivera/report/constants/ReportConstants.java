@@ -35,9 +35,9 @@ public class ReportConstants {
 	public static final String SHEET_NAME = "Veracode Effort Estimation";
 	public static final String FONT_FAMILY = "Leelawadee UI";
 
-	public static final String FORMAT_FORMULA_HRS = "ROUND(((%s/%s)*(1+(C6/100))),1)";	
+	public static final String FORMAT_FORMULA_HRS = "ROUND(((%s/%s)*(1+(C6/100))),3)";	
 
-	public static final String FORMAT_FORMULA_TOTAL_HRS = "SUM(C11:C%d)";
+	public static final String FORMAT_FORMULA_TOTAL_HRS = "ROUND(SUM(C11:C%d),0)";
 
 	public static final String FORMAT_FORMULA_TOTAL_FLAWS = "SUM(F2:F7)";
 	public static final String DEFAULT_OUTPUT_FILE = "detailVeracodeReport.xls";

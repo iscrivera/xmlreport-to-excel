@@ -68,7 +68,7 @@ public class ViolatedRuleList {
      */
     public List<PolicyRule> getPolicyRule() {
         if (policyRule == null) {
-            policyRule = new ArrayList<PolicyRule>();
+            policyRule = new ArrayList<>();
         }
         return this.policyRule;
     }

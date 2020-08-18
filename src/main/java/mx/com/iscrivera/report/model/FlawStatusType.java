@@ -92,7 +92,7 @@ import javax.xml.bind.annotation.XmlType;
 public class FlawStatusType {
 
     @XmlAttribute(name = "new", required = true)
-    protected BigInteger _new;
+    protected BigInteger valueNew;
     @XmlAttribute(name = "reopen", required = true)
     protected BigInteger reopen;
     @XmlAttribute(name = "open", required = true)
@@ -133,7 +133,7 @@ public class FlawStatusType {
      *     
      */
     public BigInteger getNew() {
-        return _new;
+        return valueNew;
     }
 
     /**
@@ -145,7 +145,7 @@ public class FlawStatusType {
      *     
      */
     public void setNew(BigInteger value) {
-        this._new = value;
+        this.valueNew = value;
     }
 
     /**

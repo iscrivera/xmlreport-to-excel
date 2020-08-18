@@ -71,7 +71,7 @@ public class AnnotationListType {
      */
     public List<AnnotationType> getAnnotation() {
         if (annotation == null) {
-            annotation = new ArrayList<AnnotationType>();
+            annotation = new ArrayList<>();
         }
         return this.annotation;
     }

@@ -71,7 +71,7 @@ public class CustomFieldsType {
      */
     public List<CustomFieldType> getCustomfield() {
         if (customfield == null) {
-            customfield = new ArrayList<CustomFieldType>();
+            customfield = new ArrayList<>();
         }
         return this.customfield;
     }

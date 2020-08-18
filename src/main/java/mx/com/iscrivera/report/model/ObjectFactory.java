@@ -34,6 +34,7 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    	super();
     }
 
     /**

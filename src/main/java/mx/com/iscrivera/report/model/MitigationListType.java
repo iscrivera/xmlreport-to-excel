@@ -71,7 +71,7 @@ public class MitigationListType {
      */
     public List<MitigationType> getMitigation() {
         if (mitigation == null) {
-            mitigation = new ArrayList<MitigationType>();
+            mitigation = new ArrayList<>();
         }
         return this.mitigation;
     }

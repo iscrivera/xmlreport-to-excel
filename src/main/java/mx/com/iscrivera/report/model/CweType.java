@@ -529,7 +529,7 @@ public class CweType {
          */
         public List<CweType.Description.Text> getText() {
             if (text == null) {
-                text = new ArrayList<CweType.Description.Text>();
+                text = new ArrayList<>();
             }
             return this.text;
         }
@@ -557,7 +557,7 @@ public class CweType {
         public static class Text {
 
             @XmlAttribute(name = "text", required = true)
-            protected String text;
+            protected String valueText;
 
             /**
              * Obtiene el valor de la propiedad text.
@@ -568,7 +568,7 @@ public class CweType {
              *     
              */
             public String getText() {
-                return text;
+                return valueText;
             }
 
             /**
@@ -580,7 +580,7 @@ public class CweType {
              *     
              */
             public void setText(String value) {
-                this.text = value;
+                this.valueText = value;
             }
 
         }

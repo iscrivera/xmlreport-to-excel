@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import mx.com.iscrivera.report.constants.ReportConstants;
 import mx.com.iscrivera.report.model.CategoryType;
 import mx.com.iscrivera.report.model.CweType;
+import mx.com.iscrivera.report.model.DataReportSection;
 import mx.com.iscrivera.report.model.Detailedreport;
 import mx.com.iscrivera.report.model.FlawType;
 import mx.com.iscrivera.report.model.SeverityType;
@@ -32,6 +33,12 @@ public class ReportUtil {
 		super();
 	}
 
+	/**
+	 * 
+	 * @param inputFile
+	 * @return
+	 * @throws JAXBException
+	 */
 	public static Detailedreport getDataReport(String inputFile) throws JAXBException {
 		LOG.debug("Getting data from file: " + inputFile);
 		File file = new File(inputFile);
@@ -40,6 +47,12 @@ public class ReportUtil {
 		return (Detailedreport) unmarshaller.unmarshal(file);
 	}
 
+	/**
+	 * 
+	 * @param dataReport
+	 * @param outputFile
+	 * @throws IOException
+	 */
 	public static void createExcelDataReport(Detailedreport dataReport, String outputFile) throws IOException {
 		LOG.debug("Generating report inside file: " + outputFile);
 		HSSFWorkbook workbook = new HSSFWorkbook();
@@ -52,32 +65,11 @@ public class ReportUtil {
 
 		// Create Title
 		int rowIndex = 1;
-		for (String title : ReportConstants.TITLES_DESC) {
-			HSSFRow titleRow = sheet.createRow(rowIndex);
-			titleRow.setHeightInPoints(24);
-			HSSFCell cell = titleRow.createCell(1);
-			cell.setCellStyle(titleStyle);
-			cell.setCellValue(title);
-			HSSFCell cellDesc = titleRow.createCell(2);
-			cellDesc.setCellStyle(titleDescStyle);
-			cellDesc.setCellValue(getValueTitle(rowIndex, dataReport));
-			sheet.autoSizeColumn(1);
-			sheet.autoSizeColumn(2);
-			rowIndex++;
-		}
+		rowIndex = createTitleSection(dataReport, sheet, titleStyle, titleDescStyle, rowIndex);
 
 		// Create Headers
 		rowIndex += 2;
-		HSSFRow headerRow = sheet.createRow(rowIndex);
-		headerRow.setHeightInPoints(24);
-		int headerIndex = 1;
-		for (String header : ReportConstants.HEADERS_DESC) {
-			HSSFCell cell = headerRow.createCell(headerIndex);
-			cell.setCellStyle(titleStyle);
-			cell.setCellValue(header);
-			sheet.autoSizeColumn(headerIndex);
-			headerIndex++;
-		}
+		createHeadersSection(sheet, titleStyle, rowIndex);
 
 		// Create Info
 		int severityRowIndex = BigInteger.ONE.intValue();
@@ -100,73 +92,8 @@ public class ReportUtil {
 						countSeverity++;
 						countFlaws++;
 						rowIndex++;
-						HSSFRow flawRow = sheet.createRow(rowIndex);
-						HSSFCell cellFlaw = flawRow.createCell(1);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(countFlaws);
-
-						cellFlaw = flawRow.createCell(2);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellFormula(String.format(ReportConstants.FORMAT_FORMULA_HRS,
-								ReportConstants.EFFORT_LIST.get(flaw.getRemediationeffort() - 1).getHrs(),
-								cwe.getStaticflaws().getFlaw().size()));
-
-						cellFlaw = flawRow.createCell(3);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getIssueid().toString());
-
-						cellFlaw = flawRow.createCell(4);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(ReportConstants.SEVERITY_DESC.get(severity.getLevel()));
-
-						cellFlaw = flawRow.createCell(5);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getModule());
-
-						cellFlaw = flawRow.createCell(6);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getSourcefilepath());
-
-						cellFlaw = flawRow.createCell(7);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getSourcefile());
-
-						cellFlaw = flawRow.createCell(8);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getLine().toString());
-
-						cellFlaw = flawRow.createCell(9);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(
-								ReportConstants.EFFORT_LIST.get(flaw.getRemediationeffort() - 1).getDesc());
-
-						cellFlaw = flawRow.createCell(10);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(category.getCategoryname());
-
-						cellFlaw = flawRow.createCell(11);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(cwe.getCweid().toString());
-
-						cellFlaw = flawRow.createCell(12);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getCategoryname());
-
-						cellFlaw = flawRow.createCell(13);
-						sheet.setColumnWidth(13, 18000);
-						severityStyleDescription.setWrapText(true);
-						cellFlaw.setCellStyle(severityStyleDescription);
-						cellFlaw.setCellValue(flaw.getDescription());
-
-						cellFlaw = flawRow.createCell(14);
-						cellFlaw.setCellStyle(severityStyle);
-						cellFlaw.setCellValue(flaw.getExploitDesc());
-
-						cellFlaw = flawRow.createCell(15);
-						cellFlaw.setCellStyle(severityStyle);
-
-						cellFlaw = flawRow.createCell(16);
-						cellFlaw.setCellStyle(severityStyle);
+						createDataSection(sheet, new DataReportSection(rowIndex, countFlaws, severity, severityStyle,
+								severityStyleDescription, category, cwe, flaw));
 					}
 				}
 			}
@@ -177,12 +104,32 @@ public class ReportUtil {
 			severityRowIndex++;
 		}
 
+		setAutosizeColumn(sheet);
+		createTotalData(sheet, titleDescStyle, rowIndex);
+
+		FileOutputStream file = new FileOutputStream(outputFile);
+		workbook.write(file);
+		file.close();
+	}
+
+	/**
+	 * @param sheet
+	 */
+	private static void setAutosizeColumn(HSSFSheet sheet) {
+		int headerIndex;
 		headerIndex = 1;
 		while (headerIndex <= ReportConstants.HEADERS_DESC.size()) {
 			sheet.autoSizeColumn(headerIndex);
 			headerIndex++;
 		}
+	}
 
+	/**
+	 * @param sheet
+	 * @param titleDescStyle
+	 * @param rowIndex
+	 */
+	private static void createTotalData(HSSFSheet sheet, CellStyle titleDescStyle, int rowIndex) {
 		// Set Total Hrs
 		HSSFRow totalRow = sheet.getRow(6);
 		HSSFCell cellTotal = totalRow.getCell(2);
@@ -194,12 +141,138 @@ public class ReportUtil {
 		HSSFCell cellTotalFlaw = totalFlawRow.getCell(2);
 		cellTotalFlaw.setCellStyle(titleDescStyle);
 		cellTotalFlaw.setCellFormula(ReportConstants.FORMAT_FORMULA_TOTAL_FLAWS);
-
-		FileOutputStream file = new FileOutputStream(outputFile);
-		workbook.write(file);
-		file.close();
 	}
 
+	/**
+	 * @param sheet
+	 * @param rowIndex
+	 * @param countFlaws
+	 * @param severity
+	 * @param severityStyle
+	 * @param severityStyleDescription
+	 * @param category
+	 * @param cwe
+	 * @param flaw
+	 */
+	private static void createDataSection(HSSFSheet sheet, DataReportSection data) {
+		HSSFRow flawRow = sheet.createRow(data.getRowIndex());
+		HSSFCell cellFlaw = flawRow.createCell(1);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getCountFlaws());
+
+		cellFlaw = flawRow.createCell(2);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellFormula(String.format(ReportConstants.FORMAT_FORMULA_HRS,
+				ReportConstants.EFFORT_LIST.get(data.getFlaw().getRemediationeffort() - 1).getHrs(),
+				data.getCwe().getStaticflaws().getFlaw().size()));
+
+		cellFlaw = flawRow.createCell(3);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getIssueid().toString());
+
+		cellFlaw = flawRow.createCell(4);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(ReportConstants.SEVERITY_DESC.get(data.getSeverity().getLevel()));
+
+		cellFlaw = flawRow.createCell(5);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getModule());
+
+		cellFlaw = flawRow.createCell(6);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getSourcefilepath());
+
+		cellFlaw = flawRow.createCell(7);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getSourcefile());
+
+		cellFlaw = flawRow.createCell(8);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getLine().toString());
+
+		cellFlaw = flawRow.createCell(9);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(ReportConstants.EFFORT_LIST.get(data.getFlaw().getRemediationeffort() - 1).getDesc());
+
+		cellFlaw = flawRow.createCell(10);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getCategory().getCategoryname());
+
+		cellFlaw = flawRow.createCell(11);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getCwe().getCweid().toString());
+
+		cellFlaw = flawRow.createCell(12);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getCategoryname());
+
+		cellFlaw = flawRow.createCell(13);
+		sheet.setColumnWidth(13, 18000);
+		data.getSeverityStyleDescription().setWrapText(true);
+		cellFlaw.setCellStyle(data.getSeverityStyleDescription());
+		cellFlaw.setCellValue(data.getFlaw().getDescription());
+
+		cellFlaw = flawRow.createCell(14);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+		cellFlaw.setCellValue(data.getFlaw().getExploitDesc());
+
+		cellFlaw = flawRow.createCell(15);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+
+		cellFlaw = flawRow.createCell(16);
+		cellFlaw.setCellStyle(data.getSeverityStyle());
+	}
+
+	/**
+	 * @param sheet
+	 * @param titleStyle
+	 * @param rowIndex
+	 */
+	private static void createHeadersSection(HSSFSheet sheet, CellStyle titleStyle, int rowIndex) {
+		HSSFRow headerRow = sheet.createRow(rowIndex);
+		headerRow.setHeightInPoints(24);
+		int headerIndex = 1;
+		for (String header : ReportConstants.HEADERS_DESC) {
+			HSSFCell cell = headerRow.createCell(headerIndex);
+			cell.setCellStyle(titleStyle);
+			cell.setCellValue(header);
+			sheet.autoSizeColumn(headerIndex);
+			headerIndex++;
+		}
+	}
+
+	/**
+	 * @param dataReport
+	 * @param sheet
+	 * @param titleStyle
+	 * @param titleDescStyle
+	 * @param rowIndex
+	 * @return
+	 */
+	private static int createTitleSection(Detailedreport dataReport, HSSFSheet sheet, CellStyle titleStyle,
+			CellStyle titleDescStyle, int rowIndex) {
+		for (String title : ReportConstants.TITLES_DESC) {
+			HSSFRow titleRow = sheet.createRow(rowIndex);
+			titleRow.setHeightInPoints(24);
+			HSSFCell cell = titleRow.createCell(1);
+			cell.setCellStyle(titleStyle);
+			cell.setCellValue(title);
+			HSSFCell cellDesc = titleRow.createCell(2);
+			cellDesc.setCellStyle(titleDescStyle);
+			cellDesc.setCellValue(getValueTitle(rowIndex, dataReport));
+			sheet.autoSizeColumn(1);
+			sheet.autoSizeColumn(2);
+			rowIndex++;
+		}
+		return rowIndex;
+	}
+
+	/**
+	 * 
+	 * @param start
+	 * @param dataReport
+	 * @return
+	 */
 	private static String getValueTitle(int start, Detailedreport dataReport) {
 		String value = "";
 		switch (start) {

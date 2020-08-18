@@ -150,7 +150,7 @@ public class CategoryType {
      */
     public List<CweType> getCwe() {
         if (cwe == null) {
-            cwe = new ArrayList<CweType>();
+            cwe = new ArrayList<>();
         }
         return this.cwe;
     }

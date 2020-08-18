@@ -66,7 +66,7 @@ public class LicenseList {
      */
     public List<License> getLicense() {
         if (license == null) {
-            license = new ArrayList<License>();
+            license = new ArrayList<>();
         }
         return this.license;
     }

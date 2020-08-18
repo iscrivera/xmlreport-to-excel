@@ -77,7 +77,7 @@ public class ParaType {
      */
     public List<BulletItemType> getBulletitem() {
         if (bulletitem == null) {
-            bulletitem = new ArrayList<BulletItemType>();
+            bulletitem = new ArrayList<>();
         }
         return this.bulletitem;
     }

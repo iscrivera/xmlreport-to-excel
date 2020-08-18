@@ -68,7 +68,7 @@ public class FilePathList {
      */
     public List<FilePath> getFilePath() {
         if (filePath == null) {
-            filePath = new ArrayList<FilePath>();
+            filePath = new ArrayList<>();
         }
         return this.filePath;
     }

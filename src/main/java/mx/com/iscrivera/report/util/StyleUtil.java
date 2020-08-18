@@ -9,12 +9,19 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 
-import lombok.NoArgsConstructor;
 import mx.com.iscrivera.report.constants.ReportConstants;
 
-@NoArgsConstructor
 public class StyleUtil {
 
+	private StyleUtil() {
+		super();
+	}
+
+	/**
+	 * 
+	 * @param workbook
+	 * @return
+	 */
 	public static CellStyle createTitleStyle(HSSFWorkbook workbook) {
 		CellStyle titleStyle = workbook.createCellStyle();
 		Font font = workbook.createFont();
@@ -29,6 +36,11 @@ public class StyleUtil {
 		return titleStyle;
 	}
 
+	/**
+	 * 
+	 * @param workbook
+	 * @return
+	 */
 	public static CellStyle createTitleDescStyle(HSSFWorkbook workbook) {
 		CellStyle titleDescStyle = workbook.createCellStyle();
 		Font font = workbook.createFont();
@@ -45,6 +57,11 @@ public class StyleUtil {
 		return titleDescStyle;
 	}
 
+	/**
+	 * 
+	 * @param workbook
+	 * @return
+	 */
 	public static CellStyle createCellStyle(HSSFWorkbook workbook) {
 		CellStyle style = workbook.createCellStyle();
 		style.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
@@ -52,6 +69,11 @@ public class StyleUtil {
 		return style;
 	}
 
+	/**
+	 * 
+	 * @param workbook
+	 * @return
+	 */
 	public static CellStyle createHeaderStyle(HSSFWorkbook workbook) {
 		CellStyle headerStyle = workbook.createCellStyle();
 		Font font = workbook.createFont();
@@ -60,6 +82,12 @@ public class StyleUtil {
 		return headerStyle;
 	}
 
+	/**
+	 * 
+	 * @param level
+	 * @param workbook
+	 * @return
+	 */
 	public static CellStyle getSeverityStyle(int level, HSSFWorkbook workbook) {
 		CellStyle severityStyle = workbook.createCellStyle();
 		Font font = workbook.createFont();
@@ -74,6 +102,11 @@ public class StyleUtil {
 		return severityStyle;
 	}
 
+	/**
+	 * 
+	 * @param level
+	 * @return
+	 */
 	private static short getIndexedColorBySeverity(int level) {
 		short index = 0;
 		switch (level) {
@@ -99,6 +132,10 @@ public class StyleUtil {
 		return index;
 	}
 
+	/**
+	 * 
+	 * @param severityStyle
+	 */
 	private static void allBorders(CellStyle severityStyle) {
 		severityStyle.setBorderBottom(BorderStyle.THIN);
 		severityStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
@@ -110,6 +147,12 @@ public class StyleUtil {
 		severityStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
 	}
 
+	/**
+	 * 
+	 * @param level
+	 * @param workbook
+	 * @return
+	 */
 	public static CellStyle getHrsSeverityStyle(int level, HSSFWorkbook workbook) {
 		CellStyle severityStyle = workbook.createCellStyle();
 		Font font = workbook.createFont();

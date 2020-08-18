@@ -71,7 +71,7 @@ public class ParaListType {
      */
     public List<ParaType> getPara() {
         if (para == null) {
-            para = new ArrayList<ParaType>();
+            para = new ArrayList<>();
         }
         return this.para;
     }

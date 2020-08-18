@@ -155,7 +155,7 @@ public class ManualAnalysisType {
      */
     public List<String> getDeliveryConsultant() {
         if (deliveryConsultant == null) {
-            deliveryConsultant = new ArrayList<String>();
+            deliveryConsultant = new ArrayList<>();
         }
         return this.deliveryConsultant;
     }
@@ -428,7 +428,7 @@ public class ManualAnalysisType {
          */
         public List<ModuleType> getModule() {
             if (module == null) {
-                module = new ArrayList<ModuleType>();
+                module = new ArrayList<>();
             }
             return this.module;
         }

@@ -108,7 +108,7 @@ public class Component {
     @XmlAttribute(name = "blocklisted")
     protected String blocklisted;
     @XmlAttribute(name = "new")
-    protected String _new;
+    protected String valueNew;
     @XmlAttribute(name = "added_date")
     protected String addedDate;
     @XmlAttribute(name = "component_affects_policy_compliance")
@@ -459,7 +459,7 @@ public class Component {
      *     
      */
     public String getNew() {
-        return _new;
+        return valueNew;
     }
 
     /**
@@ -471,7 +471,7 @@ public class Component {
      *     
      */
     public void setNew(String value) {
-        this._new = value;
+        this.valueNew = value;
     }
 
     /**

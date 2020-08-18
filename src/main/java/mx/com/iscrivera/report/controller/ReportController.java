@@ -13,6 +13,10 @@ import mx.com.iscrivera.report.util.ReportUtil;
 
 public class ReportController {
 
+	private ReportController() {
+		super();
+	}
+
 	private static final Logger LOG = Logger.getLogger(ReportController.class);
 
 	public static void getReportExcel(String[] args) {

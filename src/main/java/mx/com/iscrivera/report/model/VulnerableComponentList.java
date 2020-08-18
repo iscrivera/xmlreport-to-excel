@@ -66,7 +66,7 @@ public class VulnerableComponentList {
      */
     public List<Component> getComponent() {
         if (component == null) {
-            component = new ArrayList<Component>();
+            component = new ArrayList<>();
         }
         return this.component;
     }

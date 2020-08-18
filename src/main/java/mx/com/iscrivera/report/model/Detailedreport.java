@@ -275,7 +275,7 @@ public class Detailedreport {
      */
     public List<SeverityType> getSeverity() {
         if (severity == null) {
-            severity = new ArrayList<SeverityType>();
+            severity = new ArrayList<>();
         }
         return this.severity;
     }

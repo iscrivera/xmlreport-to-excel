@@ -102,6 +102,7 @@ _En breve compartiré el reporte de sonar y veracode correpondiente_
 * [JAXB](https://javaee.github.io/jaxb-v2/) - The Java™ Architecture for XML Binding (JAXB) provides an API and tools that automate the mapping between XML documents and Java objects.
 * [Maven](https://maven.apache.org/) - Manejador de dependencias
 * [Lombok](https://projectlombok.org/) - Project Lombok is a java library that automatically plugs into your editor and build tools
+* [POI](https://poi.apache.org/) - The Apache POI Project's mission is to create and maintain Java APIs for manipulating various file formats based upon the Office Open XML standards
 
 
 ## Autores ✒️
