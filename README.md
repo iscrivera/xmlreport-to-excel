@@ -66,15 +66,21 @@ _Para esto, una ves logeado en Veracode, vaya a su scan y seleccione:_
 ViewResults > Download > Detailed XML Export (XML) > Download
 ```
 
-_Esta acción descargará un archivo zip, el cual debes descomprimir_
-_Dentro encontrarás dos archivos un xsd y un xml_
+_Esta acción descargará un archivo zip, el cual debes descomprimir._
+
+_Dentro encontrarás dos archivos un xsd y un xml._
+
 _Este último con un nombre algo largo, como detailedreport_BET_-_Front_15_Jul_2020_Static_20208187534635.xml_
+
 _A este archivo cambiale el nombre a detailVeracodeReport.xml y pegalo en la misma carpeta don pusiste el jar xmlreport-to-excel.jar_
+
 _Ahora solo resta dar doble clic al jar y listo!_
+
 _Se generará un archivo llamado detailVeracodeReport.xls dentro de la misma carpeta con los resultados de la información._
 
 
 _También puedes ejecutar el siguiente y definir la ruta de tu archivo xml y la salida de tu reporte excel (xls)_
+
 _Esto lo puede hacer con el siguiente comando:_
 
 ```
