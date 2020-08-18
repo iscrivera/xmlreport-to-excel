@@ -92,6 +92,7 @@ public class ReportUtil {
 			CellStyle severityStyle = StyleUtil.getSeverityStyle(severity.getLevel(), workbook);
 			cell.setCellStyle(severityStyle);
 			cell.setCellValue(ReportConstants.SEVERITY_DESC.get(severity.getLevel()));
+			CellStyle severityStyleDescription = StyleUtil.getSeverityStyle(severity.getLevel(), workbook);
 			int countSeverity = 0;
 			for (CategoryType category : severity.getCategory()) {
 				for (CweType cwe : category.getCwe()) {
@@ -153,12 +154,11 @@ public class ReportUtil {
 
 						cellFlaw = flawRow.createCell(13);
 						sheet.setColumnWidth(13, 18000);
-						severityStyle.setWrapText(true);
-						cellFlaw.setCellStyle(severityStyle);
+						severityStyleDescription.setWrapText(true);
+						cellFlaw.setCellStyle(severityStyleDescription);
 						cellFlaw.setCellValue(flaw.getDescription());
 
 						cellFlaw = flawRow.createCell(14);
-						severityStyle.setWrapText(false);
 						cellFlaw.setCellStyle(severityStyle);
 						cellFlaw.setCellValue(flaw.getExploitDesc());
 
