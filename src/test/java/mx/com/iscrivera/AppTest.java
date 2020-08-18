@@ -1,5 +1,7 @@
 package mx.com.iscrivera;
 
+import javax.xml.bind.JAXBException;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -30,9 +32,12 @@ public class AppTest
 
     /**
      * Rigourous Test :-)
+     * @throws JAXBException 
      */
     public void testApp()
     {
+    	String[] args = {"C:\\apps\\report\\detailVeracodeReport.xml"};
+		App.main(args);
         assertTrue( true );
     }
 }
